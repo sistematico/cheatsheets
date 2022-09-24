@@ -25,9 +25,15 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v2
 
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
       - uses: pnpm/action-setup@v2.2.2
         with:
-          version: 7.12.2
+          version: 7
+          run_install: false
 
   deploy:
     needs: setup
