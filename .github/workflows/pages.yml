@@ -16,7 +16,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  setup:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,27 +33,17 @@ jobs:
         with:
           node-version: 16
 
-      - uses: pnpm/action-setup@v2.2.2
-        with:
-          version: 7
-          run_install: false
-
-  deploy:
-    needs: setup
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
       # - name: Set node
       #   uses: actions/setup-node@v3
       #   with:
       #     node-version: 16.x
       #     registry-url: https://registry.npmjs.org/
       #     cache: "pnpm"
+
+      - uses: pnpm/action-setup@v2.2.2
+        # with:
+          # version: 7
+          # run_install: false
 
       - name: Install deps
         run: pnpm install
